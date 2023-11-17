@@ -1,0 +1,22 @@
+version: '3'
+services:
+  telegram:
+    build: .
+    container_name: telegram
+    environment:
+      - PUID=1003 #Change it accordingly
+      - PGID=1003 #Change it accordingly
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/pode/n3tgweb:/usr/src/app
+    command: pwsh -c /usr/src/app/scheduler.ps1 && crond -b && pwsh -c /usr/src/app/server.ps1
+    networks:
+      automationbridge:
+        ipv4_address: xxx.xxx.xxx.xxx #Change it accordingly
+    restart: always
+networks:
+  default:
+    external:
+      name: automationbridge
+  automationbridge:
+    external: true
